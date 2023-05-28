@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+
+"""
+This script reads a file with a list of numbers and outputs
+their factors as two smaller numbers that multiply
+to give the original number.
+"""
+
+import sys
+
+
+def factorize(number_to_check):
+    """
+    Find two small numbers that multiply to give a given number.
+    """
+    i = 2
+
+    if number_to_check < 2:
+        return
+
+    while number_to_check % i != 0:
+        i += 1
+
+    print(f"{number_to_check}={int(number_to_check / i)}*{i}")
+
+
+if len(sys.argv) != 2:
+    sys.exit("Usage: python3 factorize.py <filename>")
+
+try:
+    with open(sys.argv[1]) as file:
+        line = file.readline()
+
+        while line:
+            number_to_check = int(line.strip())
+            factorize(number_to_check)
+            line = file.readline()
+
+except FileNotFoundError:
+    sys.exit(f"Error: File '{sys.argv[1]}' not found.")
+except ValueError:
+    sys.exit("Error: Input file must contain integers only.")
+except Exception as e:
+    sys.exit(f"Error: {e}")
