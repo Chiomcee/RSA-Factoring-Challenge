@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+
+"""Factorize a given set of numbers in a file 
+to a product of two small numbers"""
+
+import sys
+
+
+def factorize(number_to_check):
+    """Find two small numbers that multiply to give a given number"""
+    if number_to_check < 2:
+        return None
+
+    i = 2
+    while number_to_check % i:
+        i += 1
+
+    return (i, number_to_check // i)
+
+# Check if the correct number of command line arguments is provided
+if len(sys.argv) != 2:
+    print("Usage: python3 factorize.py <filename>")
+    exit(1)
+
+
+# Try to open and read the file
+try:
+    with open(sys.argv[1]) as file:
+        for line in file:
+            try:
+                number_to_check = int(line.strip())
+                factors = factorize(number_to_check)
+                if factors:
+                    print("{} = {} * {}".format(number_to_check, factors[0], factors[1]))
+                else:
+                    print("{} is not factorizable into two small numbers".format(number_to_check))
+            except ValueError:
+                print("Error: '{}' is not a valid integer".format(line.strip()))
+except FileNotFoundError:
+    print("Error: file '{}' not found".format(sys.argv[1]))
+except PermissionError:
+    print("Error: permission denied for file '{}'".format(sys.argv[1]))
+except:
+    print("Error: an unexpected error occurred")
